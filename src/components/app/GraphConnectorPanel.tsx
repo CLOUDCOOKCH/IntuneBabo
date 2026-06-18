@@ -9,6 +9,7 @@ export interface GraphConfigState {
   tenantName: string;
   prefix: string;
   useSharedClient: boolean;
+  includeAssignments: boolean;
 }
 
 export function GraphConnectorPanel({
@@ -102,6 +103,19 @@ export function GraphConnectorPanel({
               />
             </label>
           </div>
+
+          <label className="flex items-start gap-3 rounded-lg border bg-card p-4 text-sm">
+            <input
+              checked={config.includeAssignments}
+              className="mt-1"
+              type="checkbox"
+              onChange={(event) => onConfigChange({ ...config, includeAssignments: event.target.checked })}
+            />
+            <span>
+              <span className="block font-semibold">Fetch assignment payloads when available</span>
+              <span className="text-muted-foreground">Includes assignment objects exposed by the policy endpoints. Group display-name lookup still requires extra permissions.</span>
+            </span>
+          </label>
           <div className="rounded-lg border bg-card p-4">
             <div className="font-semibold">Connection status</div>
             <div className="mt-1 text-sm text-muted-foreground">{graphSignedInLabel}</div>
@@ -143,7 +157,7 @@ export function GraphConnectorPanel({
               'DeviceManagementConfiguration.Read.All',
               '',
               'Fetched endpoints:',
-              'GET /beta/deviceManagement/configurationPolicies?$expand=settings',
+              'GET /beta/deviceManagement/configurationPolicies?$expand=settings[,assignments]',
               'GET /v1.0/deviceManagement/deviceConfigurations',
               'GET /v1.0/deviceManagement/deviceCompliancePolicies',
               'GET /v1.0/deviceAppManagement/managedAppPolicies',
@@ -153,7 +167,7 @@ export function GraphConnectorPanel({
             <div className="rounded-md border p-3">Set the shared client ID once through environment configuration, then reuse it instead of creating a new app registration per customer tenant.</div>
             <div className="rounded-md border p-3">Settings Catalog and security baselines use Graph beta because expanded settings are not consistently available in v1.0.</div>
             <div className="rounded-md border p-3">Fetched Intune data is processed in browser memory and then compared locally.</div>
-            <div className="rounded-md border p-3">Assignment group resolution is still excluded until group lookup permissions are added.</div>
+            <div className="rounded-md border p-3">Optional assignment payloads preserve raw assignment evidence; resolving group display names still requires group lookup permissions.</div>
           </div>
         </CardContent>
       </Card>
