@@ -498,6 +498,20 @@ export default function App() {
     showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
   }
 
+  function printReportAsPdf(): void {
+    if (!comparison) return;
+    const reportWindow = window.open('', '_blank', 'noopener,noreferrer');
+    if (!reportWindow) {
+      showNotice('error', 'Popup blocker prevented opening the print-ready report. Allow popups and try again.');
+      return;
+    }
+    reportWindow.document.write(generateTenantHtmlReport(comparison, baselineResult ?? undefined));
+    reportWindow.document.close();
+    reportWindow.focus();
+    reportWindow.print();
+    showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
+  }
+
   function exportJson(): void {
     if (!comparison) return;
     downloadTextFile(exportName('result', 'json'), JSON.stringify({ comparison, baseline: baselineResult, imports: { baseline, tenant } }, null, 2), 'application/json');
