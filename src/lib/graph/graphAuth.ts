@@ -1,5 +1,5 @@
-const authStorageKey = 'intunebabo.graph.auth';
-const pendingStorageKey = 'intunebabo.graph.pendingAuth';
+const authStorageKey = 'intunecooker.graph.auth';
+const pendingStorageKey = 'intunecooker.graph.pendingAuth';
 
 export interface GraphAuthConfig {
   clientId: string;

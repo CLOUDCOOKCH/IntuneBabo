@@ -79,7 +79,7 @@ afterEach(() => {
   Reflect.deleteProperty(globalThis, 'document');
 });
 
-describe('IntuneBabo clean-room engine', () => {
+describe('IntuneCooker clean-room engine', () => {
   it('normalizes customer prefixes and separators', () => {
     expect(normalizePolicyNameV2('ACME - WIN - Security Baseline - Defender', ['ACME'])).toBe(
       'win security baseline defender',
@@ -121,10 +121,13 @@ describe('IntuneBabo clean-room engine', () => {
       true,
     );
     const html = generateTenantHtmlReport(result);
-    expect(html).toContain('IntuneBabo Report');
+    expect(html).toContain('IntuneCooker Report');
     expect(html).toContain('Interactive HTML report');
     expect(html).toContain('Search policies, setting names, paths, or values');
     expect(html).toContain('data-filter="drift"');
+    expect(html).toContain('data-report-script="interactive-v2"');
+    expect(html).toContain('data-expand="all"');
+    expect(html).toContain('dataset.reportInteractive');
     expect(html).toContain('Review setting evidence');
     expect(html).toContain('Copy failed');
   });
@@ -413,17 +416,17 @@ describe('IntuneBabo clean-room engine', () => {
 
   it('drops corrupted Graph auth storage payloads', () => {
     const mockWindow = createMockWindow();
-    mockWindow.sessionStorage.setItem('intunebabo.graph.auth', '{bad-json');
+    mockWindow.sessionStorage.setItem('intunecooker.graph.auth', '{bad-json');
     globalThis.window = mockWindow;
 
     expect(getStoredGraphToken()).toBeNull();
-    expect(mockWindow.sessionStorage.getItem('intunebabo.graph.auth')).toBeNull();
+    expect(mockWindow.sessionStorage.getItem('intunecooker.graph.auth')).toBeNull();
   });
 
   it('rejects Graph redirect callbacks when state does not match', async () => {
     const mockWindow = createMockWindow('?code=abc&state=wrong-state');
     mockWindow.sessionStorage.setItem(
-      'intunebabo.graph.pendingAuth',
+      'intunecooker.graph.pendingAuth',
       JSON.stringify({
         verifier: 'verifier',
         state: 'expected-state',
@@ -436,10 +439,10 @@ describe('IntuneBabo clean-room engine', () => {
       }),
     );
     globalThis.window = mockWindow;
-    globalThis.document = { title: 'IntuneBabo' } as Document;
+    globalThis.document = { title: 'IntuneCooker' } as Document;
 
     await expect(completeGraphSignInFromRedirect()).rejects.toThrow('Microsoft Graph sign-in state did not match.');
-    expect(mockWindow.sessionStorage.getItem('intunebabo.graph.pendingAuth')).toBeNull();
+    expect(mockWindow.sessionStorage.getItem('intunecooker.graph.pendingAuth')).toBeNull();
   });
 
   it('marks metadata-only policy payloads as unsupported instead of inventing pseudo-settings', async () => {

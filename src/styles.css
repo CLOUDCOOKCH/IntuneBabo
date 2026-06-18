@@ -238,17 +238,17 @@
     z-index: 1;
   }
 
-  .intunebabo-logo {
+  .intunecooker-logo {
     display: inline-flex;
     align-items: center;
     gap: 0.9rem;
   }
 
-  .intunebabo-logo--compact {
+  .intunecooker-logo--compact {
     gap: 0.7rem;
   }
 
-  .intunebabo-logo__mark {
+  .intunecooker-logo__mark {
     width: 3.25rem;
     height: 3.25rem;
     flex: 0 0 auto;
@@ -259,19 +259,19 @@
     box-shadow: 0 12px 24px rgba(0, 120, 212, 0.16), 0 0 0 1px rgba(0, 120, 212, 0.12);
   }
 
-  .intunebabo-logo--compact .intunebabo-logo__mark {
+  .intunecooker-logo--compact .intunecooker-logo__mark {
     width: 2.3rem;
     height: 2.3rem;
   }
 
-  .intunebabo-logo__wordmark {
+  .intunecooker-logo__wordmark {
     display: flex;
     flex-direction: column;
     gap: 0.12rem;
     min-width: 0;
   }
 
-  .intunebabo-logo__name {
+  .intunecooker-logo__name {
     color: hsl(var(--foreground));
     font-size: clamp(1.2rem, 2vw, 1.75rem);
     font-weight: 720;
@@ -279,11 +279,11 @@
     letter-spacing: -0.02em;
   }
 
-  .intunebabo-logo--compact .intunebabo-logo__name {
+  .intunecooker-logo--compact .intunecooker-logo__name {
     font-size: 1.02rem;
   }
 
-  .intunebabo-logo__tag {
+  .intunecooker-logo__tag {
     color: rgba(71, 85, 105, 0.74);
     font-size: 0.7rem;
     font-weight: 650;
@@ -291,7 +291,7 @@
     text-transform: uppercase;
   }
 
-  .intunebabo-logo--compact .intunebabo-logo__tag {
+  .intunecooker-logo--compact .intunecooker-logo__tag {
     font-size: 0.62rem;
   }
 
@@ -339,15 +339,15 @@
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.86) inset;
   }
 
-  .landing-wordmark .intunebabo-logo__name {
+  .landing-wordmark .intunecooker-logo__name {
     font-size: clamp(2.3rem, 5.8vw, 5rem);
   }
 
-  .landing-wordmark .intunebabo-logo__tag {
+  .landing-wordmark .intunecooker-logo__tag {
     font-size: 0.78rem;
   }
 
-  .landing-wordmark .intunebabo-logo__mark {
+  .landing-wordmark .intunecooker-logo__mark {
     width: clamp(4.5rem, 8vw, 6rem);
     height: clamp(4.5rem, 8vw, 6rem);
     border-radius: 1.35rem;

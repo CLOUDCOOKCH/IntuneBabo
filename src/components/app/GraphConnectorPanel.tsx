@@ -145,7 +145,7 @@ export function GraphConnectorPanel({
             readOnly
             value={[
               'Recommended model:',
-              'One shared multitenant SPA registration for IntuneBabo',
+              'One shared multitenant SPA registration for IntuneCooker',
               '',
               'Redirect URI:',
               typeof window !== 'undefined' ? window.location.origin + window.location.pathname : '',

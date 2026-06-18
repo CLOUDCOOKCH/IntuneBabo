@@ -1,7 +1,7 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, ArrowRight, BarChart3, CheckCircle2, Download, FileJson, GitCompareArrows, Lock, Search, ShieldCheck } from 'lucide-react';
-import intuneBaboLogo from './assets/intunebabo-logo-256.png';
-import { IntuneBaboLogo } from './components/app/IntuneBaboLogo';
+import intuneCookerLogo from './assets/intunecooker-logo.svg';
+import { IntuneCookerLogo } from './components/app/IntuneCookerLogo';
 import { NotificationBanner } from './components/app/NotificationBanner';
 import { SummaryCard } from './components/app/SummaryCard';
 import type { GraphConfigState } from './components/app/GraphConnectorPanel';
@@ -127,7 +127,7 @@ const homeDeliverables = [
 ];
 
 function exportName(kind: string, extension: string): string {
-  return `intunebabo-${kind}-${new Date().toISOString().replaceAll(':', '-')}.${extension}`;
+  return `intunecooker-${kind}-${new Date().toISOString().replaceAll(':', '-')}.${extension}`;
 }
 
 function readJsonFileInput<T>(file: File): Promise<T> {
@@ -185,12 +185,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'IntuneBabo';
+    document.title = 'IntuneCooker';
     const existing = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     const link = existing ?? document.createElement('link');
     link.rel = 'icon';
-    link.type = 'image/png';
-    link.href = intuneBaboLogo;
+    link.type = 'image/svg+xml';
+    link.href = intuneCookerLogo;
     if (!existing) document.head.append(link);
   }, []);
 
@@ -478,8 +478,24 @@ export default function App() {
 
   function exportHtml(): void {
     if (!comparison) return;
-    downloadTextFile(exportName('report', 'html'), generateTenantHtmlReport(comparison, baselineResult ?? undefined), 'text/html');
-    showNotice('success', 'HTML report exported.');
+    const reportHtml = generateTenantHtmlReport(comparison, baselineResult ?? undefined);
+    const download = downloadTextFile(exportName('report', 'html'), reportHtml, 'text/html;charset=utf-8');
+    const opened = window.open(download.url, '_blank', 'noopener,noreferrer');
+    showNotice(opened ? 'success' : 'info', opened ? 'Interactive HTML report opened in a new tab and downloaded.' : 'HTML report downloaded. Allow popups to open the interactive report automatically.');
+  }
+
+  function printReportAsPdf(): void {
+    if (!comparison) return;
+    const reportWindow = window.open('', '_blank');
+    if (!reportWindow) {
+      showNotice('error', 'Popup blocker prevented opening the print-ready report. Allow popups and try again.');
+      return;
+    }
+    reportWindow.document.write(generateTenantHtmlReport(comparison, baselineResult ?? undefined));
+    reportWindow.document.close();
+    reportWindow.focus();
+    reportWindow.print();
+    showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
   }
 
   function printReportAsPdf(): void {
@@ -533,7 +549,7 @@ export default function App() {
       <header className="command-header sticky top-0 z-20 border-b bg-card/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-2">
-            <IntuneBaboLogo compact className="max-w-fit" />
+            <IntuneCookerLogo compact className="max-w-fit" />
             <h1 className="text-2xl font-bold tracking-normal lg:text-3xl">Baseline drift review for Microsoft Intune</h1>
           </div>
           <Tabs value={page} items={navItems} onChange={setPage} />
@@ -557,11 +573,11 @@ export default function App() {
                   <span>Intune drift command center</span>
                   <Badge variant="secondary">Local-first</Badge>
                 </div>
-                <IntuneBaboLogo className="landing-wordmark" />
+                <IntuneCookerLogo className="landing-wordmark" />
                 <div className="landing-headline">
                   <h2>Cut through Intune export noise and produce an assessment people can actually use.</h2>
                   <p>
-                    IntuneBabo is built for consultants and tenant engineers who need a baseline-vs-tenant review flow, not another JSON blob viewer. Import
+                    IntuneCooker is built for consultants and tenant engineers who need a baseline-vs-tenant review flow, not another JSON blob viewer. Import
                     exports, challenge parser quality, approve uncertain matches, and ship a report with defensible drift evidence.
                   </p>
                 </div>
@@ -586,7 +602,7 @@ export default function App() {
               <div className="landing-hero__visual">
                 <div className="signal-frame">
                   <div className="signal-frame__glow" />
-                  <img alt="IntuneBabo emblem" className="signal-frame__logo" src={intuneBaboLogo} />
+                  <img alt="IntuneCooker emblem" className="signal-frame__logo" src={intuneCookerLogo} />
                   <div className="signal-frame__stats">
                     <div>
                       <span>Assessment stance</span>
@@ -968,7 +984,7 @@ export default function App() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Lock className="h-5 w-5" />Security and privacy</CardTitle>
-              <CardDescription>IntuneBabo remains local-first for import, comparison, and reporting.</CardDescription>
+              <CardDescription>IntuneCooker remains local-first for import, comparison, and reporting.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 md:grid-cols-2">
               {[

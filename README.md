@@ -1,6 +1,6 @@
-# IntuneBabo
+# IntuneCooker
 
-IntuneBabo is a clean-room, static-first web app for comparing Microsoft Intune configuration exports. It is inspired by the general workflow of Intune diffing tools, but does not copy branding, text, layout, protected assets, or proprietary implementation.
+IntuneCooker is a clean-room, static-first web app for comparing Microsoft Intune configuration exports. It is inspired by the general workflow of Intune diffing tools, but does not copy branding, text, layout, protected assets, or proprietary implementation.
 
 ## What It Does
 
@@ -34,7 +34,7 @@ Graph mode uses delegated Microsoft sign-in from the browser:
 
 Recommended Graph setup:
 
-- Create one **shared multitenant SPA app registration** for IntuneBabo.
+- Create one **shared multitenant SPA app registration** for IntuneCooker.
 - Reuse that same app registration across customer tenants.
 - Have each customer tenant admin grant consent when needed.
 - Do not create a new app registration per tenant unless you have a specific isolation requirement.
@@ -51,7 +51,7 @@ Optional shared Graph registration config in `.env.local`:
 ```bash
 VITE_GRAPH_SHARED_CLIENT_ID=00000000-0000-0000-0000-000000000000
 VITE_GRAPH_SHARED_TENANT_ID=organizations
-VITE_GRAPH_SHARED_APP_NAME=IntuneBabo shared app registration
+VITE_GRAPH_SHARED_APP_NAME=IntuneCooker shared app registration
 ```
 
 Build and verify:
@@ -77,11 +77,11 @@ For a custom domain or user/organization page, override `VITE_BASE_PATH` to `/` 
 
 ## Design language
 
-IntuneBabo follows a Fluent 2-inspired visual language: light gradient backgrounds, acrylic cards, restrained blue accents, consistent rounded corners, and gentle 150-300ms motion. The detailed project guidance lives in [`docs/fluent2-design-language.md`](docs/fluent2-design-language.md).
+IntuneCooker follows a Fluent 2-inspired visual language: light gradient backgrounds, acrylic cards, restrained blue accents, consistent rounded corners, and gentle 150-300ms motion. The detailed project guidance lives in [`docs/fluent2-design-language.md`](docs/fluent2-design-language.md).
 
 ## Supported JSON Formats
 
-IntuneBabo accepts tenant and baseline files in these shapes:
+IntuneCooker accepts tenant and baseline files in these shapes:
 
 - A single Intune policy JSON object.
 - A JSON array of policy objects.

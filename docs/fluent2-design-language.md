@@ -1,6 +1,6 @@
-# Fluent 2 visual language for IntuneBabo
+# Fluent 2 visual language for IntuneCooker
 
-IntuneBabo should feel like a Windows-adjacent control center: calm, light, and operational rather than decorative. The product compares sensitive tenant configuration, so the interface should communicate trust through clean geometry, measured depth, and familiar Microsoft-style blue accents.
+IntuneCooker should feel like a Windows-adjacent control center: calm, light, and operational rather than decorative. The product compares sensitive tenant configuration, so the interface should communicate trust through clean geometry, measured depth, and familiar Microsoft-style blue accents.
 
 ## Principles
 
@@ -26,4 +26,4 @@ IntuneBabo should feel like a Windows-adjacent control center: calm, light, and 
 
 ## Product fit
 
-This language supports IntuneBabo as a practical assessment companion: users should feel they are working inside a polished Microsoft ecosystem tool, not a cyberpunk dashboard or marketing landing page.
+This language supports IntuneCooker as a practical assessment companion: users should feel they are working inside a polished Microsoft ecosystem tool, not a cyberpunk dashboard or marketing landing page.

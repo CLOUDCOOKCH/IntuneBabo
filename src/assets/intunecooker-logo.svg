@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">IntuneCooker cloud chef logo</title>
+  <desc id="desc">A yellow chef face wearing a white cloud-shaped chef hat with a small cloud emblem.</desc>
+  <defs>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0a2540" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="face" x1="112" y1="238" x2="400" y2="430" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd91a"/>
+      <stop offset="1" stop-color="#f6bd00"/>
+    </linearGradient>
+    <linearGradient id="hat" x1="84" y1="44" x2="428" y2="254" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f7fbff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#f8fbff"/>
+  <g filter="url(#softShadow)" stroke="#061f35" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="url(#hat)" d="M132 287v-52h-21c-34 0-62-28-62-62s28-62 62-62c13 0 25 4 35 11 14-49 59-85 112-85s98 36 112 85c10-7 22-11 35-11 34 0 62 28 62 62s-28 62-62 62h-21v52z"/>
+    <path fill="url(#face)" d="M132 282h252v66c0 72-57 123-126 123s-126-51-126-123z"/>
+    <path fill="url(#face)" d="M132 337c-15-12-39-2-39 22 0 23 24 35 41 20"/>
+    <path fill="url(#face)" d="M384 337c15-12 39-2 39 22 0 23-24 35-41 20"/>
+    <path fill="#ffffff" d="M155 334c12-30 54-38 88-12v55c-42 10-79-5-88-43z"/>
+    <path fill="#ffffff" d="M357 334c-12-30-54-38-88-12v55c42 10 79-5 88-43z"/>
+    <path fill="none" d="M166 309l76 39"/>
+    <path fill="none" d="M346 309l-76 39"/>
+    <circle cx="216" cy="361" r="15" fill="#061f35"/>
+    <circle cx="296" cy="361" r="15" fill="#061f35"/>
+    <circle cx="256" cy="397" r="32" fill="#ffd21a"/>
+    <path fill="none" d="M214 432c21 24 63 24 84 0"/>
+    <path fill="none" d="M132 282c75-18 162-18 252 0"/>
+    <path fill="#ffffff" d="M201 231c0-23 19-42 42-42 6-27 29-46 58-46 32 0 58 26 58 58 24 1 43 20 43 44 0 25-20 45-45 45H224c-13 0-23-10-23-23z" transform="translate(-24 -30) scale(.9)"/>
+  </g>
+</svg>
