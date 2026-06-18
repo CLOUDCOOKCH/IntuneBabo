@@ -71,9 +71,7 @@ This repo includes a GitHub Actions workflow for GitHub Pages. To publish it:
 3. Set **Build and deployment** to **GitHub Actions**.
 4. Push to `main` or `master`, or run the **Deploy to GitHub Pages** workflow manually.
 
-The workflow runs `npm ci`, `npm run typecheck`, `npm run test`, and `npm run build`, then uploads `dist/` to Pages. It sets `VITE_BASE_PATH` to `/${repoName}/` so Vite assets resolve correctly on project pages such as `https://USERNAME.github.io/<repoName>/`.
-
-For a custom domain or user/organization page, override `VITE_BASE_PATH` to `/` in the workflow build step.
+The workflow runs `npm ci`, `npm run typecheck`, `npm run test`, and `npm run build`, then uploads `dist/` to Pages. It sets `VITE_BASE_PATH` to `./` so Vite emits relative asset URLs that work both on project pages such as `https://USERNAME.github.io/<repoName>/` and on custom domains served from the site root.
 
 ## Design language
 
