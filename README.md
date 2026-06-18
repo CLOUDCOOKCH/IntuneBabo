@@ -1,6 +1,6 @@
-# IntuneBabo
+# IntuneCooker
 
-IntuneBabo is a clean-room, static-first web app for comparing Microsoft Intune configuration exports. It is inspired by the general workflow of Intune diffing tools, but does not copy branding, text, layout, protected assets, or proprietary implementation.
+IntuneCooker is a clean-room, static-first web app for comparing Microsoft Intune configuration exports. It is inspired by the general workflow of Intune diffing tools, but does not copy branding, text, layout, protected assets, or proprietary implementation.
 
 ## What It Does
 
@@ -12,7 +12,7 @@ IntuneBabo is a clean-room, static-first web app for comparing Microsoft Intune 
 - Search across policy names, setting names, paths, and values.
 - Compare tenant policies against uploaded baseline policies.
 - Sign in to Microsoft Graph and fetch tenant Intune policies directly.
-- Export HTML, JSON, and CSV reports.
+- Export HTML, JSON, CSV, and print-ready PDF reports through the browser print dialog.
 - Process tenant data locally in the browser in JSON mode.
 
 ## Privacy
@@ -34,7 +34,7 @@ Graph mode uses delegated Microsoft sign-in from the browser:
 
 Recommended Graph setup:
 
-- Create one **shared multitenant SPA app registration** for IntuneBabo.
+- Create one **shared multitenant SPA app registration** for IntuneCooker.
 - Reuse that same app registration across customer tenants.
 - Have each customer tenant admin grant consent when needed.
 - Do not create a new app registration per tenant unless you have a specific isolation requirement.
@@ -51,7 +51,7 @@ Optional shared Graph registration config in `.env.local`:
 ```bash
 VITE_GRAPH_SHARED_CLIENT_ID=00000000-0000-0000-0000-000000000000
 VITE_GRAPH_SHARED_TENANT_ID=organizations
-VITE_GRAPH_SHARED_APP_NAME=IntuneBabo shared app registration
+VITE_GRAPH_SHARED_APP_NAME=IntuneCooker shared app registration
 ```
 
 Build and verify:
@@ -62,9 +62,26 @@ npm run test
 npm run build
 ```
 
+## Deploy to GitHub Pages
+
+This repo includes a GitHub Actions workflow for GitHub Pages. To publish it:
+
+1. Push the app to GitHub.
+2. In the repository settings, open **Pages**.
+3. Set **Build and deployment** to **GitHub Actions**.
+4. Push to `main` or `master`, or run the **Deploy to GitHub Pages** workflow manually.
+
+The workflow runs `npm ci`, `npm run typecheck`, `npm run test`, and `npm run build`, then uploads `dist/` to Pages. It sets `VITE_BASE_PATH` to `/${repoName}/` so Vite assets resolve correctly on project pages such as `https://USERNAME.github.io/<repoName>/`.
+
+For a custom domain or user/organization page, override `VITE_BASE_PATH` to `/` in the workflow build step.
+
+## Design language
+
+IntuneCooker follows a Fluent 2-inspired visual language: light gradient backgrounds, acrylic cards, restrained blue accents, consistent rounded corners, and gentle 150-300ms motion. The detailed project guidance lives in [`docs/fluent2-design-language.md`](docs/fluent2-design-language.md).
+
 ## Supported JSON Formats
 
-IntuneBabo accepts tenant and baseline files in these shapes:
+IntuneCooker accepts tenant and baseline files in these shapes:
 
 - A single Intune policy JSON object.
 - A JSON array of policy objects.
@@ -155,6 +172,7 @@ Fallback model:
 Implemented Graph fetches:
 
 - `GET /beta/deviceManagement/configurationPolicies?$expand=settings`
+- optional `GET /beta/deviceManagement/configurationPolicies?$expand=settings,assignments` for raw assignment payloads
 - `GET /v1.0/deviceManagement/deviceConfigurations`
 - `GET /v1.0/deviceManagement/deviceCompliancePolicies`
 - `GET /v1.0/deviceAppManagement/managedAppPolicies`
@@ -172,7 +190,7 @@ Future Graph permissions:
 
 Future Graph fetch areas:
 
-- Assignments and group name resolution.
+- Assignment group display-name resolution.
 - Additional security baseline metadata if exposed by Graph.
 
 ## Known Limitations
@@ -180,13 +198,13 @@ Future Graph fetch areas:
 - Fuzzy matching is token-based and intentionally conservative.
 - Unknown policy schemas use fallback parsing and may produce broad setting paths.
 - Baseline mode compares uploaded baseline JSON only.
-- PDF export is not implemented yet.
-- Graph assignment group resolution is not implemented yet.
+- Print/PDF export depends on the browser print dialog rather than direct binary PDF generation.
+- Raw Graph assignment payload fetch is available for configuration policies, but assignment group display-name resolution is not implemented yet.
 - Graph Settings Catalog fetch uses Microsoft Graph beta.
 
 ## Roadmap
 
-- Assignment group name resolution.
+- Assignment group display-name resolution.
 - Advanced fuzzy match review workflow.
-- PDF export.
+- Native binary PDF generation.
 - Azure Static Web Apps deployment.

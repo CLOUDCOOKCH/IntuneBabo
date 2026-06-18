@@ -1,13 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, ArrowRight, BarChart3, CheckCircle2, Download, FileJson, GitCompareArrows, Lock, Search, ShieldCheck } from 'lucide-react';
-import intuneBaboLogo from './assets/intunebabo-logo-256.png';
-import { GraphConnectorPanel, type GraphConfigState } from './components/app/GraphConnectorPanel';
-import { ImportReviewPanel } from './components/app/ImportReviewPanel';
-import { IntuneBaboLogo } from './components/app/IntuneBaboLogo';
-import { MatchReviewPanel } from './components/app/MatchReviewPanel';
+import intuneCookerLogo from './assets/intunecooker-logo.svg';
+import { IntuneCookerLogo } from './components/app/IntuneCookerLogo';
 import { NotificationBanner } from './components/app/NotificationBanner';
-import { PolicyDetailsCard } from './components/app/PolicyDetailsCard';
 import { SummaryCard } from './components/app/SummaryCard';
+import type { GraphConfigState } from './components/app/GraphConnectorPanel';
 import { UploadCard, type UploadState } from './components/app/UploadCard';
 import { Badge } from './components/ui/badge';
 import { Button } from './components/ui/button';
@@ -27,21 +24,29 @@ import {
 import { sharedGraphRegistration } from './lib/graph/sharedConfig';
 import { emptyImport, fetchGraphSourceDocuments } from './lib/graph/policyProvider';
 import { searchPolicies } from './lib/comparison/search';
+import { assessmentLabel, assessmentStatus, canRunComparison, matchSettingCounts, statusVariant, type CompareFilter } from './lib/app/assessment';
 import type {
   AppNotice,
-  AssessmentStatus,
   BaselineComparisonResult,
   ImportSourceDocument,
   MatchDecisionMap,
-  PolicyMatch,
   TenantComparisonResult,
   TenantImport,
 } from './types/tenantdiff';
 import { decodeTextFile } from './utils/decodeTextFile';
 import { downloadTextFile } from './utils/download';
 
+
+const GraphConnectorPanel = lazy(() => import('./components/app/GraphConnectorPanel').then((module) => ({ default: module.GraphConnectorPanel })));
+const ImportReviewPanel = lazy(() => import('./components/app/ImportReviewPanel').then((module) => ({ default: module.ImportReviewPanel })));
+const MatchReviewPanel = lazy(() => import('./components/app/MatchReviewPanel').then((module) => ({ default: module.MatchReviewPanel })));
+const PolicyDetailsCard = lazy(() => import('./components/app/PolicyDetailsCard').then((module) => ({ default: module.PolicyDetailsCard })));
+
+function LoadingPanel() {
+  return <div className="rounded-lg border p-4 text-sm text-muted-foreground">Loading workspace...</div>;
+}
+
 type Page = 'home' | 'import' | 'review' | 'matches' | 'compare' | 'search' | 'privacy' | 'graph';
-type CompareFilter = 'all' | AssessmentStatus;
 
 const navItems: TabItem<Page>[] = [
   { value: 'home', label: 'Home' },
@@ -62,6 +67,7 @@ const initialGraphConfig: GraphConfigState = {
   tenantName: 'Graph tenant',
   prefix: '',
   useSharedClient: sharedGraphRegistration !== null,
+  includeAssignments: false,
 };
 
 const homeSignals = [
@@ -121,51 +127,11 @@ const homeDeliverables = [
 ];
 
 function exportName(kind: string, extension: string): string {
-  return `intunebabo-${kind}-${new Date().toISOString().replaceAll(':', '-')}.${extension}`;
-}
-
-function statusVariant(status: string): 'success' | 'warning' | 'destructive' | 'secondary' {
-  if (status === 'matched' || status === 'identical' || status === 'compliant') return 'success';
-  if (status === 'possible' || status === 'different' || status === 'review' || status === 'drift') return 'warning';
-  if (status.includes('missing') || status.includes('only') || status === 'unsupported') return 'destructive';
-  return 'secondary';
+  return `intunecooker-${kind}-${new Date().toISOString().replaceAll(':', '-')}.${extension}`;
 }
 
 function readJsonFileInput<T>(file: File): Promise<T> {
   return file.arrayBuffer().then((buffer) => JSON.parse(decodeTextFile(buffer)) as T);
-}
-
-function hasNoComparableSettings(match: PolicyMatch): boolean {
-  return (
-    match.settingComparisons.length === 0 &&
-    [match.policyA, match.policyB].some((policy) => policy?.warnings.some((warning) => warning.includes('No comparable settings')))
-  );
-}
-
-function assessmentStatus(match: PolicyMatch): AssessmentStatus {
-  if (hasNoComparableSettings(match)) return 'unsupported';
-  if (match.status === 'onlyInA') return 'missingPolicy';
-  if (match.status === 'onlyInB') return 'extra';
-  if (match.status === 'possible') return 'review';
-  if (match.settingComparisons.some((setting) => setting.status === 'different' || setting.status === 'missingInB')) return 'drift';
-  return 'compliant';
-}
-
-function assessmentLabel(status: AssessmentStatus): string {
-  if (status === 'missingPolicy') return 'Missing baseline policy';
-  if (status === 'extra') return 'Extra tenant policy';
-  if (status === 'review') return 'Review candidate';
-  if (status === 'drift') return 'Confirmed drift';
-  if (status === 'unsupported') return 'Unsupported or incomplete';
-  return 'Compliant';
-}
-
-function matchSettingCounts(match: PolicyMatch) {
-  return {
-    matching: match.settingComparisons.filter((setting) => setting.status === 'identical').length,
-    different: match.settingComparisons.filter((setting) => setting.status === 'different').length,
-    missingInTenant: match.settingComparisons.filter((setting) => setting.status === 'missingInB').length,
-  };
 }
 
 async function filesToDocuments(files: File[]): Promise<ImportSourceDocument[]> {
@@ -178,11 +144,6 @@ async function filesToDocuments(files: File[]): Promise<ImportSourceDocument[]> 
       sourceRef: file.name,
     })),
   );
-}
-
-function canRunComparison(tenant: TenantImport, baseline: TenantImport): boolean {
-  const hardErrors = [...tenant.issues, ...baseline.issues].some((issue) => issue.severity === 'error');
-  return !hardErrors && tenant.policies.length > 0 && baseline.policies.length > 0;
 }
 
 export default function App() {
@@ -224,12 +185,12 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'IntuneBabo';
+    document.title = 'IntuneCooker';
     const existing = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     const link = existing ?? document.createElement('link');
     link.rel = 'icon';
-    link.type = 'image/png';
-    link.href = intuneBaboLogo;
+    link.type = 'image/svg+xml';
+    link.href = intuneCookerLogo;
     if (!existing) document.head.append(link);
   }, []);
 
@@ -458,7 +419,7 @@ export default function App() {
     try {
       const graphIssues: TenantImport['issues'] = [];
       const graphDiagnostics: TenantImport['diagnostics'] = [];
-      const tenantDocuments = await fetchGraphSourceDocuments(token, graphIssues, graphDiagnostics);
+      const tenantDocuments = await fetchGraphSourceDocuments(token, graphIssues, graphDiagnostics, graphConfig.includeAssignments);
       const baselineDocuments = baselineUpload.files.length > 0 ? await filesToDocuments(baselineUpload.files) : null;
       const parsed = await worker.parseImports(
         {
@@ -515,24 +476,40 @@ export default function App() {
     showNotice('info', 'Microsoft Graph session cleared.');
   }
 
-  function exportHtml(): void {
+  const exportHtml = (): void => {
     if (!comparison) return;
-    downloadTextFile(exportName('report', 'html'), generateTenantHtmlReport(comparison, baselineResult ?? undefined), 'text/html');
-    showNotice('success', 'HTML report exported.');
-  }
+    const reportHtml = generateTenantHtmlReport(comparison, baselineResult ?? undefined);
+    const download = downloadTextFile(exportName('report', 'html'), reportHtml, 'text/html;charset=utf-8');
+    const opened = window.open(download.url, '_blank', 'noopener,noreferrer');
+    showNotice(opened ? 'success' : 'info', opened ? 'Interactive HTML report opened in a new tab and downloaded.' : 'HTML report downloaded. Allow popups to open the interactive report automatically.');
+  };
 
-  function exportJson(): void {
+  const printReportAsPdf = (): void => {
+    if (!comparison) return;
+    const reportWindow = window.open('', '_blank');
+    if (!reportWindow) {
+      showNotice('error', 'Popup blocker prevented opening the print-ready report. Allow popups and try again.');
+      return;
+    }
+    reportWindow.document.write(generateTenantHtmlReport(comparison, baselineResult ?? undefined));
+    reportWindow.document.close();
+    reportWindow.focus();
+    reportWindow.print();
+    showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
+  };
+
+  const exportJson = (): void => {
     if (!comparison) return;
     downloadTextFile(exportName('result', 'json'), JSON.stringify({ comparison, baseline: baselineResult, imports: { baseline, tenant } }, null, 2), 'application/json');
     showNotice('success', 'JSON result exported.');
-  }
+  };
 
-  function exportMatchMap(): void {
+  const exportMatchMap = (): void => {
     downloadTextFile(exportName('match-map', 'json'), JSON.stringify(matchDecisions, null, 2), 'application/json');
     showNotice('success', 'Match decision profile exported.');
-  }
+  };
 
-  async function importMatchMap(file: File | undefined): Promise<void> {
+  const importMatchMap = async (file: File | undefined): Promise<void> => {
     if (!file) return;
     try {
       const imported = await readJsonFileInput<MatchDecisionMap>(file);
@@ -545,20 +522,20 @@ export default function App() {
     } catch (error) {
       showNotice('error', error instanceof Error ? `Could not import match map: ${error.message}` : 'Could not import match map.');
     }
-  }
+  };
 
-  function exportCsv(): void {
+  const exportCsv = (): void => {
     if (!comparison) return;
     downloadTextFile(exportName('result', 'csv'), comparisonToCsv(comparison), 'text/csv');
     showNotice('success', 'CSV result exported.');
-  }
+  };
 
   return (
     <div className="app-shell min-h-screen bg-background text-foreground">
       <header className="command-header sticky top-0 z-20 border-b bg-card/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-2">
-            <IntuneBaboLogo compact className="max-w-fit" />
+            <IntuneCookerLogo compact className="max-w-fit" />
             <h1 className="text-2xl font-bold tracking-normal lg:text-3xl">Baseline drift review for Microsoft Intune</h1>
           </div>
           <Tabs value={page} items={navItems} onChange={setPage} />
@@ -573,7 +550,8 @@ export default function App() {
           ) : null}
         </div>
 
-        {page === 'home' ? (
+        <Suspense fallback={<LoadingPanel />}>
+          {page === 'home' ? (
           <div className="space-y-8">
             <section className="landing-hero">
               <div className="landing-hero__copy">
@@ -581,11 +559,11 @@ export default function App() {
                   <span>Intune drift command center</span>
                   <Badge variant="secondary">Local-first</Badge>
                 </div>
-                <IntuneBaboLogo className="landing-wordmark" />
+                <IntuneCookerLogo className="landing-wordmark" />
                 <div className="landing-headline">
                   <h2>Cut through Intune export noise and produce an assessment people can actually use.</h2>
                   <p>
-                    IntuneBabo is built for consultants and tenant engineers who need a baseline-vs-tenant review flow, not another JSON blob viewer. Import
+                    IntuneCooker is built for consultants and tenant engineers who need a baseline-vs-tenant review flow, not another JSON blob viewer. Import
                     exports, challenge parser quality, approve uncertain matches, and ship a report with defensible drift evidence.
                   </p>
                 </div>
@@ -610,7 +588,7 @@ export default function App() {
               <div className="landing-hero__visual">
                 <div className="signal-frame">
                   <div className="signal-frame__glow" />
-                  <img alt="IntuneBabo emblem" className="signal-frame__logo" src={intuneBaboLogo} />
+                  <img alt="IntuneCooker emblem" className="signal-frame__logo" src={intuneCookerLogo} />
                   <div className="signal-frame__stats">
                     <div>
                       <span>Assessment stance</span>
@@ -870,6 +848,7 @@ export default function App() {
                             }}
                           />
                         </label>
+                        <Button variant="outline" onClick={printReportAsPdf}><Download className="h-4 w-4" />Print/PDF</Button>
                         <Button onClick={exportHtml}><Download className="h-4 w-4" />HTML report</Button>
                       </div>
                     </div>
@@ -991,7 +970,7 @@ export default function App() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2"><Lock className="h-5 w-5" />Security and privacy</CardTitle>
-              <CardDescription>IntuneBabo remains local-first for import, comparison, and reporting.</CardDescription>
+              <CardDescription>IntuneCooker remains local-first for import, comparison, and reporting.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 md:grid-cols-2">
               {[
@@ -1025,6 +1004,7 @@ export default function App() {
             onSignOut={signOutGraph}
           />
         ) : null}
+        </Suspense>
       </main>
     </div>
   );
