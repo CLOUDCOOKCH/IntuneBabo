@@ -1,0 +1,59 @@
+[
+  {
+    "@odata.type": "#microsoft.graph.deviceManagementConfigurationPolicy",
+    "id": "b-001",
+    "displayName": "FABRIKAM-WIN-Baseline-Defender-ASR",
+    "createdDateTime": "2025-03-01T10:00:00Z",
+    "lastModifiedDateTime": "2025-04-01T10:00:00Z",
+    "version": 7,
+    "roleScopeTagIds": ["1"],
+    "settings": [
+      {
+        "settingInstance": {
+          "settingDefinitionId": "defender.asr.blockCredentialStealing",
+          "choiceSettingValue": {
+            "value": "enabled"
+          }
+        }
+      },
+      {
+        "settingInstance": {
+          "settingDefinitionId": "defender.asr.blockOfficeMacro",
+          "choiceSettingValue": {
+            "value": "enabled"
+          }
+        }
+      }
+    ],
+    "assignments": [
+      {
+        "target": {
+          "groupId": "fabrikam-all-windows"
+        }
+      }
+    ]
+  },
+  {
+    "id": "b-002",
+    "displayName": "FABRIKAM-WIN-Compliance-BitLocker",
+    "settings": {
+      "bitLockerRequired": true,
+      "minimumOsVersion": "10.0.22631"
+    }
+  },
+  {
+    "id": "b-003",
+    "displayName": "FABRIKAM-iOS-AppProtection-Default",
+    "settings": {
+      "pinRequired": true,
+      "minimumPinLength": 6
+    }
+  },
+  {
+    "id": "b-004",
+    "displayName": "FABRIKAM-WIN-OnlyInFabrikam",
+    "settings": {
+      "enabled": true
+    }
+  }
+]

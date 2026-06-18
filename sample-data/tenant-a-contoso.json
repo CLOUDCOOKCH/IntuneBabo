@@ -1,0 +1,75 @@
+{
+  "value": [
+    {
+      "@odata.type": "#microsoft.graph.deviceManagementConfigurationPolicy",
+      "id": "a-001",
+      "displayName": "CONTOSO-WIN-Baseline-Defender-ASR",
+      "createdDateTime": "2025-01-01T10:00:00Z",
+      "lastModifiedDateTime": "2025-02-01T10:00:00Z",
+      "version": 3,
+      "roleScopeTagIds": ["0"],
+      "settings": [
+        {
+          "settingInstance": {
+            "settingDefinitionId": "defender.asr.blockOfficeMacro",
+            "choiceSettingValue": {
+              "value": "enabled"
+            }
+          }
+        },
+        {
+          "settingInstance": {
+            "settingDefinitionId": "defender.asr.blockCredentialStealing",
+            "choiceSettingValue": {
+              "value": "enabled"
+            }
+          }
+        }
+      ],
+      "assignments": [
+        {
+          "target": {
+            "groupId": "contoso-all-windows"
+          }
+        }
+      ]
+    },
+    {
+      "id": "a-002",
+      "displayName": "CONTOSO-WIN-Compliance-BitLocker",
+      "settings": {
+        "bitLockerRequired": true,
+        "minimumOsVersion": "10.0.19045"
+      }
+    },
+    {
+      "id": "a-003",
+      "displayName": "CONTOSO-iOS-AppProtection-Default",
+      "settings": {
+        "pinRequired": true,
+        "minimumPinLength": 6
+      }
+    },
+    {
+      "id": "a-004",
+      "displayName": "CONTOSO-WIN-OnlyInContoso",
+      "settings": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "a-005",
+      "displayName": "CONTOSO-WIN-Duplicate-Policy",
+      "settings": {
+        "enabled": true
+      }
+    },
+    {
+      "id": "a-006",
+      "displayName": "CONTOSO-WIN-Duplicate-Policy",
+      "settings": {
+        "enabled": false
+      }
+    }
+  ]
+}
