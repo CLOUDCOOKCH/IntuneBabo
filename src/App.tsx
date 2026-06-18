@@ -588,7 +588,6 @@ export default function App() {
               <div className="landing-hero__visual">
                 <div className="signal-frame">
                   <div className="signal-frame__glow" />
-                  <img alt="IntuneCooker emblem" className="signal-frame__logo" src={intuneCookerLogo} />
                   <div className="signal-frame__stats">
                     <div>
                       <span>Assessment stance</span>
