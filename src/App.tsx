@@ -476,15 +476,15 @@ export default function App() {
     showNotice('info', 'Microsoft Graph session cleared.');
   }
 
-  function exportHtml(): void {
+  const exportHtml = (): void => {
     if (!comparison) return;
     const reportHtml = generateTenantHtmlReport(comparison, baselineResult ?? undefined);
     const download = downloadTextFile(exportName('report', 'html'), reportHtml, 'text/html;charset=utf-8');
     const opened = window.open(download.url, '_blank', 'noopener,noreferrer');
     showNotice(opened ? 'success' : 'info', opened ? 'Interactive HTML report opened in a new tab and downloaded.' : 'HTML report downloaded. Allow popups to open the interactive report automatically.');
-  }
+  };
 
-  function printReportAsPdf(): void {
+  const printReportAsPdf = (): void => {
     if (!comparison) return;
     const reportWindow = window.open('', '_blank');
     if (!reportWindow) {
@@ -496,34 +496,20 @@ export default function App() {
     reportWindow.focus();
     reportWindow.print();
     showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
-  }
+  };
 
-  function printReportAsPdf(): void {
-    if (!comparison) return;
-    const reportWindow = window.open('', '_blank', 'noopener,noreferrer');
-    if (!reportWindow) {
-      showNotice('error', 'Popup blocker prevented opening the print-ready report. Allow popups and try again.');
-      return;
-    }
-    reportWindow.document.write(generateTenantHtmlReport(comparison, baselineResult ?? undefined));
-    reportWindow.document.close();
-    reportWindow.focus();
-    reportWindow.print();
-    showNotice('success', 'Print dialog opened. Choose Save as PDF to export a PDF copy.');
-  }
-
-  function exportJson(): void {
+  const exportJson = (): void => {
     if (!comparison) return;
     downloadTextFile(exportName('result', 'json'), JSON.stringify({ comparison, baseline: baselineResult, imports: { baseline, tenant } }, null, 2), 'application/json');
     showNotice('success', 'JSON result exported.');
-  }
+  };
 
-  function exportMatchMap(): void {
+  const exportMatchMap = (): void => {
     downloadTextFile(exportName('match-map', 'json'), JSON.stringify(matchDecisions, null, 2), 'application/json');
     showNotice('success', 'Match decision profile exported.');
-  }
+  };
 
-  async function importMatchMap(file: File | undefined): Promise<void> {
+  const importMatchMap = async (file: File | undefined): Promise<void> => {
     if (!file) return;
     try {
       const imported = await readJsonFileInput<MatchDecisionMap>(file);
@@ -536,13 +522,13 @@ export default function App() {
     } catch (error) {
       showNotice('error', error instanceof Error ? `Could not import match map: ${error.message}` : 'Could not import match map.');
     }
-  }
+  };
 
-  function exportCsv(): void {
+  const exportCsv = (): void => {
     if (!comparison) return;
     downloadTextFile(exportName('result', 'csv'), comparisonToCsv(comparison), 'text/csv');
     showNotice('success', 'CSV result exported.');
-  }
+  };
 
   return (
     <div className="app-shell min-h-screen bg-background text-foreground">
