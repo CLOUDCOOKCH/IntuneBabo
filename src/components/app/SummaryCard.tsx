@@ -9,7 +9,7 @@ export function SummaryCard({ label, value, icon }: { label: string; value: numb
           <div className="text-2xl font-bold">{value}</div>
           <div className="text-sm text-muted-foreground">{label}</div>
         </div>
-        <div className="rounded-lg border border-cyan-300/20 bg-cyan-950/45 p-3 text-primary">{icon}</div>
+        <div className="rounded-xl border border-sky-200/70 bg-white/70 p-3 text-primary shadow-sm">{icon}</div>
       </CardContent>
     </div>
   );

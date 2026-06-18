@@ -75,6 +75,10 @@ The workflow runs `npm ci`, `npm run typecheck`, `npm run test`, and `npm run bu
 
 For a custom domain or user/organization page, override `VITE_BASE_PATH` to `/` in the workflow build step.
 
+## Design language
+
+IntuneBabo follows a Fluent 2-inspired visual language: light gradient backgrounds, acrylic cards, restrained blue accents, consistent rounded corners, and gentle 150-300ms motion. The detailed project guidance lives in [`docs/fluent2-design-language.md`](docs/fluent2-design-language.md).
+
 ## Supported JSON Formats
 
 IntuneBabo accepts tenant and baseline files in these shapes:
