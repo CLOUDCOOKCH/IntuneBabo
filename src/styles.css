@@ -4,44 +4,49 @@
 
 @layer base {
   :root {
-    --background: 258 58% 5%;
-    --foreground: 71 100% 92%;
-    --card: 260 58% 9%;
-    --card-foreground: 71 100% 92%;
-    --primary: 141 92% 58%;
-    --primary-foreground: 264 84% 5%;
-    --secondary: 295 90% 15%;
-    --secondary-foreground: 71 100% 92%;
-    --muted: 260 45% 13%;
-    --muted-foreground: 67 48% 74%;
-    --destructive: 346 100% 63%;
+    --background: 210 60% 97%;
+    --foreground: 215 32% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 32% 16%;
+    --primary: 206 100% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 211 44% 92%;
+    --secondary-foreground: 215 32% 20%;
+    --muted: 214 42% 94%;
+    --muted-foreground: 215 16% 43%;
+    --destructive: 356 72% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 303 67% 38%;
-    --input: 184 62% 23%;
-    --ring: 120 100% 55%;
-    --signal: 47 100% 58%;
-    --signal-foreground: 264 84% 5%;
-    --success: 151 100% 48%;
-    --success-foreground: 264 84% 5%;
-    --hot: 329 100% 58%;
-    --panel-edge: 184 100% 54%;
-    --radius: 0.5rem;
+    --border: 213 32% 84%;
+    --input: 214 36% 88%;
+    --ring: 206 100% 42%;
+    --signal: 194 88% 42%;
+    --signal-foreground: 215 32% 16%;
+    --success: 142 60% 36%;
+    --success-foreground: 0 0% 100%;
+    --hot: 262 72% 60%;
+    --panel-edge: 206 100% 73%;
+    --radius: 0.75rem;
   }
 
   * {
     @apply border-border;
   }
 
+  html {
+    background: hsl(var(--background));
+  }
+
   body {
     @apply bg-background text-foreground;
     min-height: 100vh;
-    font-family: Bahnschrift, "Aptos Display", Aptos, "Segoe UI Variable", sans-serif;
+    font-family: "Segoe UI Variable", "Segoe UI", Aptos, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     background:
-      conic-gradient(from 210deg at 15% 10%, rgba(255, 0, 190, 0.24), rgba(0, 255, 170, 0.12), rgba(255, 242, 0, 0.12), rgba(80, 0, 255, 0.18), rgba(255, 0, 190, 0.24)),
-      repeating-linear-gradient(117deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 17px),
-      repeating-linear-gradient(63deg, rgba(0, 255, 208, 0.03) 0 1px, transparent 1px 23px),
-      linear-gradient(180deg, #10001e 0%, #06020d 48%, #120018 100%);
+      radial-gradient(circle at 12% 8%, rgba(96, 165, 250, 0.32), transparent 28rem),
+      radial-gradient(circle at 88% 4%, rgba(14, 165, 233, 0.18), transparent 24rem),
+      radial-gradient(circle at 74% 86%, rgba(167, 139, 250, 0.16), transparent 28rem),
+      linear-gradient(180deg, #f8fbff 0%, #edf5ff 46%, #f7fbff 100%);
     background-attachment: fixed;
+    color-scheme: light;
   }
 
   body::before {
@@ -51,13 +56,11 @@
     inset: 0;
     z-index: -1;
     background:
-      repeating-conic-gradient(from 0deg at 50% 8%, rgba(57, 255, 20, 0.08) 0 4deg, transparent 4deg 11deg),
-      linear-gradient(rgba(255, 0, 200, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: auto, 38px 38px, 38px 38px;
-    mix-blend-mode: screen;
-    opacity: 0.48;
-    mask-image: linear-gradient(180deg, black 0%, black 58%, transparent 100%);
+      linear-gradient(115deg, rgba(255, 255, 255, 0.55), transparent 42%),
+      linear-gradient(rgba(15, 23, 42, 0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 23, 42, 0.022) 1px, transparent 1px);
+    background-size: auto, 42px 42px, 42px 42px;
+    mask-image: linear-gradient(180deg, black 0%, black 72%, transparent 100%);
   }
 
   button,
@@ -69,8 +72,8 @@
   h1,
   h2,
   h3 {
-    font-family: Bahnschrift, "Aptos Display", Aptos, sans-serif;
-    letter-spacing: 0;
+    font-family: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", Aptos, sans-serif;
+    letter-spacing: -0.025em;
   }
 
   code,
@@ -84,52 +87,66 @@
 }
 
 @layer components {
-  .glass-panel {
-    @apply border shadow-sm backdrop-blur;
+  .glass-panel,
+  .landing-hero,
+  .landing-band,
+  .metric-card {
     position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.72);
     background:
-      linear-gradient(135deg, rgba(40, 0, 70, 0.88), rgba(0, 32, 44, 0.76)),
-      repeating-linear-gradient(135deg, rgba(57, 255, 20, 0.08) 0 1px, transparent 1px 18px);
+      linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(244, 249, 255, 0.58)),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16));
     box-shadow:
-      0 20px 80px rgba(255, 0, 200, 0.16),
-      0 0 42px rgba(0, 255, 255, 0.13),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      0 18px 48px rgba(31, 72, 122, 0.12),
+      0 1px 0 rgba(255, 255, 255, 0.78) inset,
+      0 0 0 1px rgba(104, 160, 230, 0.16) inset;
+    backdrop-filter: blur(22px) saturate(1.28);
+    -webkit-backdrop-filter: blur(22px) saturate(1.28);
   }
 
-  .glass-panel::before {
+  .glass-panel::before,
+  .landing-hero::before,
+  .landing-band::before,
+  .metric-card::before {
     pointer-events: none;
     content: "";
     position: absolute;
-    inset: -1px;
+    inset: 0;
     border-radius: inherit;
-    background:
-      linear-gradient(90deg, hsl(var(--panel-edge)), hsl(var(--hot)), hsl(var(--signal)), hsl(var(--primary))),
-      linear-gradient(180deg, hsl(var(--panel-edge)), transparent 22%);
-    opacity: 0.58;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(0, 120, 212, 0.28), rgba(255, 255, 255, 0.36));
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask-composite: exclude;
-    padding: 1px;
+  }
+
+  .glass-panel:hover,
+  .metric-card:hover,
+  .landing-capability:hover,
+  .landing-panel:hover,
+  .landing-step:hover,
+  .landing-proof:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 24px 58px rgba(31, 72, 122, 0.16),
+      0 1px 0 rgba(255, 255, 255, 0.82) inset,
+      0 0 0 1px rgba(0, 120, 212, 0.2) inset;
   }
 
   .soft-gradient {
     background:
-      linear-gradient(135deg, rgba(57, 255, 20, 0.18), rgba(255, 0, 200, 0.14), rgba(255, 242, 0, 0.10)),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent);
+      radial-gradient(circle at 16% 14%, rgba(96, 165, 250, 0.26), transparent 24rem),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(239, 246, 255, 0.62));
   }
 
   .metric-card {
-    @apply overflow-hidden rounded-lg border bg-card shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md;
-    background:
-      conic-gradient(from 160deg at 100% 0%, rgba(57, 255, 20, 0.20), transparent, rgba(255, 0, 200, 0.18), transparent),
-      linear-gradient(180deg, rgba(43, 0, 70, 0.94), rgba(4, 21, 34, 0.94));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.10),
-      0 14px 40px rgba(0, 0, 0, 0.28),
-      0 0 28px rgba(57, 255, 20, 0.10);
+    @apply rounded-2xl transition-all duration-200 ease-out;
+    min-height: 100%;
   }
 
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+    --tw-ring-offset-color: hsl(var(--background));
   }
 
   .app-shell {
@@ -141,23 +158,25 @@
     pointer-events: none;
     content: "";
     position: fixed;
-    inset: 0;
+    inset: auto 0 0 0;
     z-index: -1;
-    background:
-      linear-gradient(120deg, transparent 0 42%, rgba(57, 255, 20, 0.16) 42.2% 42.6%, transparent 42.8%),
-      linear-gradient(64deg, transparent 0 63%, rgba(255, 0, 200, 0.13) 63.2% 63.6%, transparent 63.8%),
-      repeating-radial-gradient(ellipse at 50% 15%, transparent 0 38px, rgba(255, 242, 0, 0.055) 39px 41px, transparent 42px 76px);
+    height: 24rem;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.64));
   }
 
   .command-header {
-    border-color: rgba(255, 0, 200, 0.45) !important;
+    border-color: rgba(143, 183, 231, 0.46) !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 255, 0.68)),
+      radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.2), transparent 28rem) !important;
+    box-shadow: 0 12px 32px rgba(31, 72, 122, 0.1);
+    backdrop-filter: blur(22px) saturate(1.22);
+    -webkit-backdrop-filter: blur(22px) saturate(1.22);
   }
 
   .command-header h1 {
-    text-shadow:
-      1px 0 0 rgba(255, 0, 200, 0.34),
-      -1px 0 0 rgba(0, 255, 255, 0.28),
-      0 0 18px rgba(57, 255, 20, 0.14);
+    color: #1f2937;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   .app-main {
@@ -165,18 +184,19 @@
   }
 
   .app-main::before {
-    content: "LOCAL JSON MODE";
+    content: "LOCAL-FIRST ASSESSMENT";
     position: absolute;
     right: 1.25rem;
     top: 0.35rem;
-    color: rgba(0, 220, 255, 0.34);
-    font-family: "Cascadia Code", Consolas, monospace;
+    color: rgba(71, 85, 105, 0.52);
+    font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+    font-weight: 650;
+    letter-spacing: 0.14em;
   }
 
-  .hero-panel {
+  .hero-panel,
+  .privacy-panel {
     min-height: 23.5rem;
     overflow: hidden;
   }
@@ -188,17 +208,11 @@
     bottom: -8rem;
     width: 25rem;
     height: 25rem;
-    border: 1px solid rgba(57, 255, 20, 0.34);
-    background:
-      conic-gradient(from 180deg, transparent, rgba(57, 255, 20, 0.18), rgba(255, 0, 200, 0.16), transparent 34%),
-      repeating-conic-gradient(from 0deg, rgba(0, 255, 255, 0.20) 0 2deg, transparent 2deg 12deg);
     border-radius: 999px;
-    opacity: 0.82;
-    animation: slow-orbit 22s linear infinite;
-  }
-
-  .privacy-panel {
-    min-height: 23.5rem;
+    background:
+      radial-gradient(circle, rgba(0, 120, 212, 0.18), transparent 58%),
+      conic-gradient(from 180deg, rgba(0, 120, 212, 0.08), rgba(96, 165, 250, 0.18), transparent 65%);
+    animation: slow-float 18s ease-in-out infinite;
   }
 
   .upload-dropzone {
@@ -210,11 +224,9 @@
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.10), rgba(255, 0, 200, 0.08), transparent),
-      repeating-linear-gradient(135deg, rgba(0, 255, 255, 0.05) 0 1px, transparent 1px 12px);
+    background: linear-gradient(90deg, transparent, rgba(0, 120, 212, 0.08), transparent);
     transform: translateX(-100%);
-    transition: transform 520ms ease;
+    transition: transform 260ms cubic-bezier(0.33, 0, 0.67, 1);
   }
 
   .upload-dropzone:hover::before {
@@ -243,8 +255,8 @@
     display: block;
     object-fit: cover;
     border-radius: 1rem;
-    border: 1px solid rgba(57, 255, 20, 0.22);
-    filter: drop-shadow(0 0 18px rgba(57, 255, 20, 0.18)) drop-shadow(0 0 22px rgba(255, 0, 200, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 12px 24px rgba(0, 120, 212, 0.16), 0 0 0 1px rgba(0, 120, 212, 0.12);
   }
 
   .intunebabo-logo--compact .intunebabo-logo__mark {
@@ -255,20 +267,16 @@
   .intunebabo-logo__wordmark {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.12rem;
     min-width: 0;
   }
 
   .intunebabo-logo__name {
     color: hsl(var(--foreground));
     font-size: clamp(1.2rem, 2vw, 1.75rem);
-    font-weight: 800;
+    font-weight: 720;
     line-height: 1;
-    letter-spacing: 0.01em;
-    text-shadow:
-      1px 0 0 rgba(255, 0, 200, 0.2),
-      -1px 0 0 rgba(0, 255, 255, 0.18),
-      0 0 16px rgba(57, 255, 20, 0.12);
+    letter-spacing: -0.02em;
   }
 
   .intunebabo-logo--compact .intunebabo-logo__name {
@@ -276,11 +284,10 @@
   }
 
   .intunebabo-logo__tag {
-    color: rgba(222, 255, 191, 0.72);
-    font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
-    font-size: 0.69rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    color: rgba(71, 85, 105, 0.74);
+    font-size: 0.7rem;
+    font-weight: 650;
+    letter-spacing: 0.055em;
     text-transform: uppercase;
   }
 
@@ -288,46 +295,22 @@
     font-size: 0.62rem;
   }
 
-  .landing-hero,
-  .landing-band {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(255, 0, 200, 0.28);
-    background:
-      linear-gradient(135deg, rgba(14, 3, 30, 0.92), rgba(4, 20, 33, 0.82)),
-      repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 18px);
-    box-shadow:
-      0 22px 70px rgba(0, 0, 0, 0.34),
-      0 0 36px rgba(0, 255, 255, 0.08),
-      inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-
-  .landing-hero::before,
-  .landing-band::before {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    background: linear-gradient(90deg, rgba(0, 255, 255, 0.62), rgba(255, 0, 200, 0.3), rgba(57, 255, 20, 0.4));
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    padding: 1px;
-    opacity: 0.7;
-  }
-
   .landing-hero {
     display: grid;
     grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
     gap: 2rem;
     min-height: 42rem;
-    border-radius: 1.4rem;
+    border-radius: 1.5rem;
     padding: 2rem;
   }
 
   .landing-hero__copy,
   .landing-hero__visual,
-  .landing-band {
+  .landing-band,
+  .landing-panel,
+  .landing-step,
+  .landing-capability,
+  .landing-proof {
     position: relative;
     z-index: 1;
   }
@@ -344,16 +327,16 @@
     width: fit-content;
     align-items: center;
     gap: 0.75rem;
-    border: 1px solid rgba(0, 255, 255, 0.24);
+    border: 1px solid rgba(0, 120, 212, 0.18);
     border-radius: 999px;
-    background: rgba(5, 15, 26, 0.8);
+    background: rgba(255, 255, 255, 0.66);
     padding: 0.45rem 0.75rem;
-    color: rgba(222, 255, 191, 0.82);
-    font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+    color: rgba(30, 64, 110, 0.84);
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 650;
+    letter-spacing: 0.055em;
     text-transform: uppercase;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.86) inset;
   }
 
   .landing-wordmark .intunebabo-logo__name {
@@ -378,9 +361,9 @@
 
   .landing-headline h2 {
     margin: 0;
-    color: #f3fffb;
+    color: #111827;
     font-size: clamp(2.55rem, 6vw, 4.85rem);
-    line-height: 0.96;
+    line-height: 0.98;
     text-wrap: balance;
   }
 
@@ -390,7 +373,7 @@
   .landing-step p,
   .landing-panel p,
   .landing-list {
-    color: rgba(223, 244, 255, 0.76);
+    color: rgba(51, 65, 85, 0.82);
     font-size: 0.98rem;
     line-height: 1.7;
   }
@@ -408,10 +391,20 @@
     gap: 0.9rem;
   }
 
+  .landing-proof,
+  .landing-capability,
+  .landing-panel,
+  .landing-step {
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 1.1rem;
+    background: rgba(255, 255, 255, 0.54);
+    box-shadow: 0 10px 28px rgba(31, 72, 122, 0.08), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+    transition: transform 200ms cubic-bezier(0.33, 0, 0.67, 1), box-shadow 200ms cubic-bezier(0.33, 0, 0.67, 1), border-color 200ms ease;
+    backdrop-filter: blur(18px) saturate(1.18);
+    -webkit-backdrop-filter: blur(18px) saturate(1.18);
+  }
+
   .landing-proof {
-    border: 1px solid rgba(0, 255, 255, 0.18);
-    border-radius: 1rem;
-    background: rgba(5, 12, 24, 0.66);
     padding: 1rem;
   }
 
@@ -421,20 +414,19 @@
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    color: rgba(57, 255, 20, 0.84);
-    font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
+    color: rgba(0, 91, 161, 0.82);
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.055em;
     text-transform: uppercase;
   }
 
   .landing-proof strong {
     display: block;
     margin-top: 0.4rem;
-    color: #f4fdff;
+    color: #111827;
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 720;
   }
 
   .landing-hero__visual {
@@ -446,16 +438,16 @@
     position: relative;
     width: 100%;
     min-height: 100%;
-    border: 1px solid rgba(0, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.7);
     border-radius: 1.4rem;
     background:
-      radial-gradient(circle at 50% 14%, rgba(0, 255, 255, 0.16), transparent 34%),
-      radial-gradient(circle at 78% 24%, rgba(255, 0, 200, 0.16), transparent 28%),
-      linear-gradient(180deg, rgba(6, 11, 24, 0.95), rgba(5, 18, 28, 0.88));
+      radial-gradient(circle at 50% 14%, rgba(0, 120, 212, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 246, 255, 0.58));
     padding: 1.5rem;
     display: grid;
     grid-template-rows: 1fr auto;
     align-items: center;
+    box-shadow: 0 18px 42px rgba(31, 72, 122, 0.12), 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   }
 
   .signal-frame__glow {
@@ -464,12 +456,10 @@
     width: 24rem;
     height: 24rem;
     border-radius: 999px;
-    background:
-      conic-gradient(from 180deg, rgba(57, 255, 20, 0.22), rgba(0, 255, 255, 0.08), rgba(255, 0, 200, 0.22), transparent 70%),
-      repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.1) 0 2deg, transparent 2deg 11deg);
+    background: radial-gradient(circle, rgba(0, 120, 212, 0.22), rgba(96, 165, 250, 0.1) 44%, transparent 70%);
     filter: blur(0.2rem);
-    opacity: 0.85;
-    animation: slow-orbit 26s linear infinite;
+    opacity: 0.82;
+    animation: slow-float 22s ease-in-out infinite;
   }
 
   .signal-frame__logo {
@@ -479,10 +469,7 @@
     margin: 0 auto;
     display: block;
     border-radius: 2rem;
-    box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.05),
-      0 26px 80px rgba(0, 0, 0, 0.45),
-      0 0 40px rgba(57, 255, 20, 0.08);
+    box-shadow: 0 26px 70px rgba(31, 72, 122, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.74);
   }
 
   .signal-frame__stats {
@@ -494,24 +481,24 @@
   }
 
   .signal-frame__stats div {
-    border: 1px solid rgba(255, 0, 200, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.72);
     border-radius: 1rem;
-    background: rgba(5, 10, 22, 0.82);
+    background: rgba(255, 255, 255, 0.62);
     padding: 0.9rem 1rem;
   }
 
   .signal-frame__stats span {
     display: block;
-    color: rgba(188, 233, 247, 0.74);
+    color: rgba(71, 85, 105, 0.76);
     font-size: 0.76rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.055em;
   }
 
   .signal-frame__stats strong {
     display: block;
     margin-top: 0.45rem;
-    color: #f4fdff;
+    color: #111827;
     font-size: 0.95rem;
   }
 
@@ -542,9 +529,9 @@
   .landing-section-copy h3,
   .landing-panel h3 {
     margin: 0;
-    color: #f3fffb;
+    color: #111827;
     font-size: clamp(1.4rem, 3vw, 2.3rem);
-    line-height: 1.05;
+    line-height: 1.08;
   }
 
   .landing-capability-grid {
@@ -554,26 +541,18 @@
     gap: 1rem;
   }
 
-  .landing-capability,
-  .landing-panel,
-  .landing-step {
-    border: 1px solid rgba(0, 255, 255, 0.16);
-    border-radius: 1.1rem;
-    background: rgba(5, 11, 22, 0.72);
-    padding: 1.15rem;
-  }
-
   .landing-capability {
     display: grid;
     align-content: start;
     gap: 0.8rem;
     min-height: 15rem;
+    padding: 1.15rem;
   }
 
   .landing-capability h4,
   .landing-step h4 {
     margin: 0;
-    color: #f4fdff;
+    color: #111827;
     font-size: 1.06rem;
   }
 
@@ -588,15 +567,16 @@
     grid-template-columns: auto 1fr;
     gap: 0.95rem;
     min-height: 9.5rem;
+    padding: 1.15rem;
   }
 
   .landing-step__index {
     width: 3rem;
     height: 3rem;
-    border: 1px solid rgba(57, 255, 20, 0.28);
+    border: 1px solid rgba(0, 120, 212, 0.18);
     border-radius: 0.95rem;
-    background: linear-gradient(135deg, rgba(57, 255, 20, 0.18), rgba(0, 255, 255, 0.1), rgba(255, 0, 200, 0.1));
-    color: #f6fffc;
+    background: linear-gradient(135deg, rgba(0, 120, 212, 0.12), rgba(255, 255, 255, 0.74));
+    color: #005ba1;
     font-family: "Cascadia Code", "Cascadia Mono", Consolas, monospace;
     font-size: 0.9rem;
     font-weight: 800;
@@ -609,6 +589,7 @@
     display: grid;
     align-content: start;
     gap: 0.9rem;
+    padding: 1.15rem;
   }
 
   .landing-badges {
@@ -628,15 +609,15 @@
 
   .landing-panel--callout {
     background:
-      radial-gradient(circle at top right, rgba(255, 0, 200, 0.18), transparent 32%),
-      linear-gradient(180deg, rgba(7, 14, 26, 0.88), rgba(8, 14, 32, 0.76));
+      radial-gradient(circle at top right, rgba(0, 120, 212, 0.12), transparent 36%),
+      rgba(255, 255, 255, 0.58);
   }
 }
 
 @keyframes panel-reveal {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -644,41 +625,29 @@
   }
 }
 
-@keyframes signal-sweep {
-  from {
-    background-position: -180% 0;
-  }
-  to {
-    background-position: 180% 0;
-  }
-}
-
-@keyframes slow-orbit {
-  from {
-    transform: rotate(0deg) scale(1);
+@keyframes slow-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: rotate(180deg) scale(1.04);
-  }
-  to {
-    transform: rotate(360deg) scale(1);
+    transform: translate3d(-0.75rem, -0.9rem, 0) scale(1.035);
   }
 }
 
 main > div,
 .metric-card,
 .glass-panel {
-  animation: panel-reveal 420ms ease both;
+  animation: panel-reveal 280ms cubic-bezier(0.33, 0, 0.67, 1) both;
 }
 
 main > div:nth-child(2),
 .metric-card:nth-child(2) {
-  animation-delay: 70ms;
+  animation-delay: 60ms;
 }
 
 main > div:nth-child(3),
 .metric-card:nth-child(3) {
-  animation-delay: 120ms;
+  animation-delay: 100ms;
 }
 
 .tracking-wide {
@@ -690,11 +659,15 @@ main > div:nth-child(3),
   color: hsl(var(--primary)) !important;
 }
 
+.bg-cyan-950\/60 {
+  background-color: rgba(219, 234, 254, 0.78) !important;
+}
+
 button,
 a,
 summary,
 label {
-  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  transition: color 180ms cubic-bezier(0.33, 0, 0.67, 1), background-color 180ms cubic-bezier(0.33, 0, 0.67, 1), border-color 180ms cubic-bezier(0.33, 0, 0.67, 1), transform 180ms cubic-bezier(0.33, 0, 0.67, 1), box-shadow 180ms cubic-bezier(0.33, 0, 0.67, 1);
 }
 
 button:hover,
@@ -702,25 +675,15 @@ summary:hover {
   transform: translateY(-1px);
 }
 
-header {
-  background:
-    linear-gradient(180deg, rgba(20, 0, 38, 0.92), rgba(5, 0, 18, 0.80)),
-    linear-gradient(90deg, rgba(255, 0, 200, 0.10), transparent 46%, rgba(57, 255, 20, 0.08)),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 19px) !important;
-  box-shadow: 0 18px 50px rgba(255, 0, 200, 0.09), 0 0 24px rgba(0, 255, 255, 0.06);
-}
-
 header::after {
   content: "";
   display: block;
   height: 1px;
-  background: linear-gradient(90deg, transparent, hsl(var(--primary)), hsl(var(--signal)), transparent);
-  background-size: 180% 100%;
-  animation: signal-sweep 7s linear infinite;
+  background: linear-gradient(90deg, transparent, rgba(0, 120, 212, 0.34), transparent);
 }
 
 .app-shell {
-  filter: saturate(0.96);
+  filter: saturate(1.02);
 }
 
 @media (prefers-reduced-motion: reduce) {

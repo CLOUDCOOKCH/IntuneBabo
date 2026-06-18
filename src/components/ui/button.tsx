@@ -9,18 +9,17 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export function Button({ className, variant = 'default', ...props }: ButtonProps) {
   const variants: Record<ButtonVariant, string> = {
-    default:
-      'border border-lime-300/70 bg-[linear-gradient(110deg,#39ff14,#00f5ff,#ff00c8)] text-black shadow-[0_0_28px_rgba(57,255,20,0.25)] hover:shadow-[0_0_34px_rgba(255,0,200,0.34)]',
-    secondary: 'border border-fuchsia-400/45 bg-fuchsia-950/55 text-lime-100 hover:bg-fuchsia-800/60',
-    outline: 'border border-cyan-300/55 bg-background/45 text-foreground hover:border-lime-300 hover:bg-lime-950/40',
-    ghost: 'text-muted-foreground hover:bg-fuchsia-950/45 hover:text-lime-100',
-    destructive: 'border border-red-300/50 bg-destructive text-destructive-foreground hover:bg-pink-500',
+    default: 'border border-sky-600 bg-[#0078d4] text-white shadow-[0_8px_18px_rgba(0,120,212,0.24)] hover:bg-[#106ebe] hover:shadow-[0_12px_24px_rgba(0,120,212,0.28)]',
+    secondary: 'border border-slate-300/70 bg-white/72 text-slate-800 shadow-sm hover:bg-blue-50/80 hover:text-slate-950',
+    outline: 'border border-slate-300/80 bg-white/52 text-slate-800 shadow-sm hover:border-sky-400 hover:bg-white/82',
+    ghost: 'text-slate-600 hover:bg-white/62 hover:text-slate-950',
+    destructive: 'border border-red-600 bg-red-600 text-white shadow-[0_8px_18px_rgba(220,38,38,0.2)] hover:bg-red-700',
   };
 
   return (
     <button
       className={cn(
-        'inline-flex h-10 items-center justify-center gap-2 rounded-md px-4 text-sm font-bold transition disabled:pointer-events-none disabled:opacity-50',
+        'inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition-all duration-200 ease-out disabled:pointer-events-none disabled:opacity-50',
         variants[variant],
         className,
       )}
