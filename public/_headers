@@ -1,0 +1,11 @@
+/assets/*.js
+  Content-Type: text/javascript; charset=utf-8
+
+/assets/*.mjs
+  Content-Type: text/javascript; charset=utf-8
+
+/assets/*.css
+  Content-Type: text/css; charset=utf-8
+
+/assets/*.wasm
+  Content-Type: application/wasm
