@@ -55,8 +55,8 @@ export function UploadCard({
         <label
           className={`upload-dropzone focus-ring flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed p-5 text-center transition-colors ${
             isDragging
-              ? 'border-primary bg-cyan-950/60 shadow-[0_0_28px_rgba(0,220,255,0.20)]'
-              : 'border-cyan-700/60 bg-background/35 hover:border-primary hover:bg-cyan-950/45'
+              ? 'border-primary bg-sky-50/80 shadow-[0_14px_30px_rgba(0,120,212,0.12)]'
+              : 'border-slate-300/80 bg-white/54 hover:border-primary hover:bg-white/82'
           }`}
           onDragEnter={(event) => {
             event.preventDefault();
@@ -73,7 +73,7 @@ export function UploadCard({
             applyFiles(event.dataTransfer.files);
           }}
         >
-          <div className="mb-3 rounded-full border border-fuchsia-400/30 bg-card p-3 text-primary shadow-sm">
+          <div className="mb-3 rounded-full border border-sky-200/70 bg-white/72 p-3 text-primary shadow-sm">
             <UploadCloud className="h-7 w-7" />
           </div>
           <span className="font-semibold">Drop JSON exports or click to browse</span>

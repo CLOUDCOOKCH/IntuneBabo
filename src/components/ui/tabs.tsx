@@ -13,13 +13,12 @@ interface TabsProps<T extends string> {
 
 export function Tabs<T extends string>({ value, items, onChange }: TabsProps<T>) {
   return (
-    <div className="flex flex-wrap gap-1 rounded-lg border border-fuchsia-400/40 bg-background/50 p-1 shadow-inner shadow-fuchsia-950/40">
+    <div className="flex flex-wrap gap-1 rounded-xl border border-white/70 bg-white/58 p-1 shadow-inner shadow-slate-200/80 backdrop-blur-xl">
       {items.map((item) => (
         <button
           className={cn(
-            'rounded-md px-3 py-2 text-sm font-bold text-muted-foreground transition',
-            value === item.value &&
-              'bg-[linear-gradient(110deg,#39ff14,#00f5ff,#ff00c8)] text-black shadow-[0_0_20px_rgba(57,255,20,0.28)]',
+            'rounded-lg px-3 py-2 text-sm font-semibold text-muted-foreground transition-all duration-200 ease-out hover:bg-white/70 hover:text-slate-950',
+            value === item.value && 'bg-white text-slate-950 shadow-sm ring-1 ring-sky-500/20',
           )}
           key={item.value}
           type="button"

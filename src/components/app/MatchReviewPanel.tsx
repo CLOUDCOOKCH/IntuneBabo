@@ -82,7 +82,7 @@ export function MatchReviewPanel({
                 ))}
               </div>
 
-              <div className="mt-3 rounded-md border bg-cyan-950/35 p-3">
+              <div className="mt-3 rounded-md border bg-sky-50/70 p-3">
                 <label className="space-y-1 text-sm font-semibold">
                   Map to another tenant policy
                   <select

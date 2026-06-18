@@ -109,20 +109,20 @@ function SettingRows({
           <div className="grid gap-3 md:grid-cols-2">
             <div>
               <div className="mb-1 text-xs font-semibold uppercase text-muted-foreground">{leftLabel}</div>
-              <pre className="min-h-16 max-h-48 overflow-auto rounded-lg border border-cyan-300/20 bg-[#07111e] p-3 text-xs leading-relaxed text-foreground">
+              <pre className="min-h-16 max-h-48 overflow-auto rounded-lg border border-slate-200 bg-slate-950 p-3 text-xs leading-relaxed text-slate-50">
                 {formatSettingValue(setting.settingPath, setting.tenantAValue)}
               </pre>
             </div>
             <div>
               <div className="mb-1 text-xs font-semibold uppercase text-muted-foreground">{rightLabel}</div>
-              <pre className="min-h-16 max-h-48 overflow-auto rounded-lg border border-cyan-300/20 bg-[#07111e] p-3 text-xs leading-relaxed text-foreground">
+              <pre className="min-h-16 max-h-48 overflow-auto rounded-lg border border-slate-200 bg-slate-950 p-3 text-xs leading-relaxed text-slate-50">
                 {formatSettingValue(setting.settingPath, setting.tenantBValue)}
               </pre>
             </div>
           </div>
           <details className="mt-2">
             <summary className="cursor-pointer text-sm font-semibold text-primary">Raw setting JSON</summary>
-            <pre className="mt-2 max-h-72 overflow-auto rounded-md border border-fuchsia-400/20 bg-muted p-3 text-xs">
+            <pre className="mt-2 max-h-72 overflow-auto rounded-md border border-slate-200 bg-slate-50 p-3 text-xs">
               {JSON.stringify({ tenantA: setting.tenantASetting?.raw, tenantB: setting.tenantBSetting?.raw }, null, 2)}
             </pre>
           </details>
@@ -175,7 +175,7 @@ export function PolicyDetailsCard({
       </CardHeader>
       <CardContent className="space-y-4">
         {match.policyA && match.status !== 'matched' ? (
-          <div className="rounded-md border bg-cyan-950/40 p-3">
+          <div className="rounded-md border bg-sky-50/70 p-3">
             <label className="space-y-1 text-sm font-semibold">
               Choose matching tenant policy
               <select

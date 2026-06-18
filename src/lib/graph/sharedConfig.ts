@@ -10,7 +10,7 @@ function readEnv(value: string | undefined): string {
 
 const clientId = readEnv(import.meta.env.VITE_GRAPH_SHARED_CLIENT_ID);
 const tenantId = readEnv(import.meta.env.VITE_GRAPH_SHARED_TENANT_ID) || 'organizations';
-const appName = readEnv(import.meta.env.VITE_GRAPH_SHARED_APP_NAME) || 'IntuneBabo shared app registration';
+const appName = readEnv(import.meta.env.VITE_GRAPH_SHARED_APP_NAME) || 'IntuneCooker shared app registration';
 
 export const sharedGraphRegistration: SharedGraphRegistration | null = clientId
   ? {

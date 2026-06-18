@@ -59,6 +59,7 @@ const graphEndpoints = [
   {
     fileName: 'graph-settings-catalog-policies.json',
     url: '/beta/deviceManagement/configurationPolicies?$expand=settings',
+    assignmentUrl: '/beta/deviceManagement/configurationPolicies?$expand=settings,assignments',
     label: 'Settings Catalog and security baseline policies',
   },
   {
@@ -87,20 +88,21 @@ export async function fetchGraphSourceDocuments(
   const documents: ImportSourceDocument[] = [];
 
   for (const endpoint of graphEndpoints) {
+    const requestUrl = includeAssignments && 'assignmentUrl' in endpoint ? endpoint.assignmentUrl : endpoint.url;
     try {
-      const body = await graphGetCollection(token, endpoint.url);
+      const body = await graphGetCollection(token, requestUrl);
       const value = Array.isArray(body.value) ? body.value : [];
       documents.push({
         name: endpoint.fileName,
         text: JSON.stringify(body),
         size: JSON.stringify(body).length,
         sourceKind: 'graph',
-        sourceRef: endpoint.url,
+        sourceRef: requestUrl,
       });
       diagnostics.push({
-        sourceId: endpoint.url,
+        sourceId: requestUrl,
         fileName: endpoint.fileName,
-        sourceRef: endpoint.url,
+        sourceRef: requestUrl,
         sourceKind: 'graph',
         parser: 'policy-list',
         policyObjectsFound: value.length,
@@ -117,7 +119,7 @@ export async function fetchGraphSourceDocuments(
         confidence: value.length > 0 ? 'high' : 'medium',
         samplePolicies: [],
         warnings: [`Fetched from Microsoft Graph: ${endpoint.label}`],
-        endpoint: endpoint.url,
+        endpoint: requestUrl,
       });
     } catch (error) {
       issues.push({
@@ -125,8 +127,8 @@ export async function fetchGraphSourceDocuments(
         severity: 'warning',
         message: error instanceof Error ? error.message : `Could not fetch ${endpoint.label}.`,
         source: 'graph',
-        endpoint: endpoint.url,
-        sourceId: endpoint.url,
+        endpoint: requestUrl,
+        sourceId: requestUrl,
       });
     }
   }
@@ -135,7 +137,7 @@ export async function fetchGraphSourceDocuments(
     issues.push({
       fileName: 'Microsoft Graph',
       severity: 'warning',
-      message: 'Assignment expansion is not implemented yet. Policy configuration was fetched without assignment group details.',
+      message: 'Assignment payloads were requested. Raw assignment objects are included where Microsoft Graph returns them; group display-name resolution is not enabled without Directory.Read.All.',
       source: 'graph',
     });
   }

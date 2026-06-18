@@ -1,6 +1,7 @@
 import type { CandidatePolicyMatch, NormalizedPolicy, PolicyMatch, TenantComparisonResult, TenantImport } from '../../types/tenantdiff';
 import { similarity } from '../normalization/policyName';
 import { compareSettings } from './settingsCompare';
+import { summarizeMatches } from './matchSummary';
 
 function scorePolicy(left: NormalizedPolicy, right: NormalizedPolicy): { confidence: number; reasons: string[] } {
   let confidence = similarity(left.normalizedName, right.normalizedName);
@@ -124,49 +125,7 @@ export function compareTenants(tenantA: TenantImport, tenantB: TenantImport, fuz
     });
   });
 
-  const summary = matches.reduce(
-    (acc, match) => {
-      if (match.status === 'matched') acc.matchedPolicies += 1;
-      if (match.status === 'possible') acc.possibleMatches += 1;
-      if (match.status === 'onlyInA') acc.onlyInA += 1;
-      if (match.status === 'onlyInB') acc.onlyInB += 1;
-      const unsupported =
-        match.settingComparisons.length === 0 &&
-        [match.policyA, match.policyB].some((policy) => policy?.warnings.some((warning) => warning.includes('No comparable settings')));
-      if (unsupported) acc.unsupportedPolicies += 1;
-      if (match.status === 'matched' && !unsupported) {
-        const hasDrift = match.settingComparisons.some((setting) => setting.status === 'different' || setting.status === 'missingInB');
-        if (hasDrift) acc.driftPolicies += 1;
-        else if (match.settingComparisons.length > 0) acc.compliantPolicies += 1;
-      }
-      match.settingComparisons.forEach((setting) => {
-        if (setting.status === 'identical') acc.identicalSettings += 1;
-        if (setting.status === 'different') acc.differentSettings += 1;
-        if (setting.status === 'missingInA') acc.missingInASettings += 1;
-        if (setting.status === 'missingInB') acc.missingInBSettings += 1;
-        if (setting.isKnown) acc.translatedSettings += 1;
-        else acc.unknownSettings += 1;
-      });
-      return acc;
-    },
-    {
-      totalTenantA: tenantA.policies.length,
-      totalTenantB: tenantB.policies.length,
-      matchedPolicies: 0,
-      possibleMatches: 0,
-      onlyInA: 0,
-      onlyInB: 0,
-      identicalSettings: 0,
-      differentSettings: 0,
-      missingInASettings: 0,
-      missingInBSettings: 0,
-      unsupportedPolicies: 0,
-      driftPolicies: 0,
-      compliantPolicies: 0,
-      translatedSettings: 0,
-      unknownSettings: 0,
-    },
-  );
+  const summary = summarizeMatches(matches, tenantA.policies.length, tenantB.policies.length);
 
   return {
     generatedAt: new Date().toISOString(),
