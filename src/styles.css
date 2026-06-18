@@ -462,15 +462,6 @@
     animation: slow-float 22s ease-in-out infinite;
   }
 
-  .signal-frame__logo {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 32rem);
-    margin: 0 auto;
-    display: block;
-    border-radius: 2rem;
-    box-shadow: 0 26px 70px rgba(31, 72, 122, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.74);
-  }
 
   .signal-frame__stats {
     position: relative;
