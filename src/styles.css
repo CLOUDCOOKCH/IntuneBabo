@@ -253,8 +253,8 @@
     height: 3.25rem;
     flex: 0 0 auto;
     display: block;
-    object-fit: cover;
-    border-radius: 1rem;
+    object-fit: contain;
+    border-radius: 0.85rem;
     border: 1px solid rgba(255, 255, 255, 0.75);
     box-shadow: 0 12px 24px rgba(0, 120, 212, 0.16), 0 0 0 1px rgba(0, 120, 212, 0.12);
   }
@@ -350,7 +350,7 @@
   .landing-wordmark .intunecooker-logo__mark {
     width: clamp(4.5rem, 8vw, 6rem);
     height: clamp(4.5rem, 8vw, 6rem);
-    border-radius: 1.35rem;
+    border-radius: 1rem;
   }
 
   .landing-headline {
