@@ -1,5 +1,5 @@
 import type { BaselineComparisonResult, PolicyMatch, SettingComparison, TenantComparisonResult } from '../../types/tenantdiff';
-import intuneBaboLogoInline from '../../assets/intunebabo-logo-256.png?inline';
+import intuneCookerLogoInline from '../../assets/intunecooker-logo.svg?inline';
 import { formatSettingValue } from '../normalization/settingDictionary';
 import { previewValue } from '../parsers/intuneJsonParser';
 
@@ -130,7 +130,7 @@ function metricCard(label: string, value: string | number, tone = ''): string {
 }
 
 function reportLogo(): string {
-  return `<div class="report-brand-mark" aria-hidden="true"><img src="${intuneBaboLogoInline}" alt=""></div>`;
+  return `<div class="report-brand-mark" aria-hidden="true"><img src="${intuneCookerLogoInline}" alt=""></div>`;
 }
 
 function riskScore(data: ReturnType<typeof buildReportData>): number {
@@ -211,7 +211,7 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IntuneBabo Report</title>
+  <title>IntuneCooker Report</title>
   <style>
     :root{
       --bg:#06101d;--panel:#0d1b2c;--panel-2:#10243a;--ink:#e8f7ff;--muted:#9eb2c4;--line:#155369;
@@ -249,9 +249,10 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
     .identity-strip div{border:1px solid #17495e;border-radius:12px;background:#081421;padding:13px}.identity-strip span{display:block;color:var(--muted);font-size:.72rem;font-weight:900;text-transform:uppercase}.identity-strip b{display:block;margin-top:4px;font-size:1.02rem}.identity-strip .versus{display:grid;place-items:center;color:var(--amber);font-weight:900;border-color:#6f5724}
     .issue-tape{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.issue{position:relative;overflow:hidden;border:1px solid #17495e;border-radius:14px;padding:14px;background:#081421}.issue:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--cyan)}.issue.warn:before{background:var(--amber)}.issue.bad:before{background:var(--red)}.issue.good:before{background:var(--green)}.issue strong{display:block;font-size:1.6rem}.issue span{color:var(--muted);font-weight:800;font-size:.82rem}
     .toolbar{position:sticky;top:0;z-index:5;margin:18px 0;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(6,16,29,.88);backdrop-filter:blur(18px);
-      display:grid;gap:12px;grid-template-columns:1fr auto;align-items:center}
+      display:grid;gap:12px;grid-template-columns:1fr auto auto;align-items:center}
     .search{height:42px;width:100%;border:1px solid #1a667b;border-radius:9px;background:#081421;color:var(--ink);padding:0 14px;font:inherit}
     .filters{display:flex;flex-wrap:wrap;gap:8px}
+    .report-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
     button{border:1px solid #1a667b;border-radius:8px;background:#0b1b2b;color:var(--ink);font:inherit;font-weight:800;padding:10px 12px;cursor:pointer;transition:.18s ease}
     button:hover,button.active{transform:translateY(-1px);border-color:var(--cyan);background:var(--cyan);color:#06101d;box-shadow:0 0 24px rgba(18,216,232,.22)}
     .metrics{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:12px;margin:18px 0}
@@ -285,7 +286,7 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
     <header>
       <div class="hero-grid">
         <div>
-          <div class="brand">${reportLogo()}<div class="brand-copy"><span>Interactive HTML report</span><strong>IntuneBabo</strong></div></div>
+          <div class="brand">${reportLogo()}<div class="brand-copy"><span>Interactive HTML report</span><strong>IntuneCooker</strong></div></div>
           <h1>Baseline compliance review</h1>
           <p class="lead">Generated ${escapeHtml(generatedAt)}. This report is a self-contained drift workbook: filter, search, expand evidence, and copy setting details without sending tenant data anywhere.</p>
         </div>
@@ -307,7 +308,7 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
     </section>
     <div class="toolbar">
       <input id="search" class="search" placeholder="Search policies, setting names, paths, or values">
-      <div class="filters">
+      <div class="filters" aria-label="Policy filters">
         <button class="active" data-filter="all">All</button>
         <button data-filter="drift">Drift</button>
         <button data-filter="unsupported">Unsupported</button>
@@ -315,6 +316,10 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
         <button data-filter="possible">Possible match</button>
         <button data-filter="extra">Extra tenant</button>
         <button data-filter="compliant">Compliant</button>
+      </div>
+      <div class="report-actions" aria-label="Report actions">
+        <button type="button" data-expand="all">Expand all</button>
+        <button type="button" data-collapse="all">Collapse all</button>
       </div>
     </div>
     <section class="metrics">
@@ -349,64 +354,88 @@ export function generateTenantHtmlReport(result: TenantComparisonResult, baselin
     <main id="policies" class="policy-list">${policyCards}</main>
     <div id="noResults" class="no-results">No policies match the current filter and search.</div>
   </div>
-  <script>
-    const buttons = Array.from(document.querySelectorAll('[data-filter]'));
-    const cards = Array.from(document.querySelectorAll('.policy-card'));
-    const search = document.getElementById('search');
-    const noResults = document.getElementById('noResults');
-    let activeFilter = 'all';
-    function applyFilters(){
-      const query = (search.value || '').trim().toLowerCase();
-      let visible = 0;
-      cards.forEach(card => {
-        const group = card.dataset.group;
+  <script data-report-script="interactive-v2">
+    (() => {
+      const buttons = Array.from(document.querySelectorAll('[data-filter]'));
+      const cards = Array.from(document.querySelectorAll('.policy-card'));
+      const search = document.getElementById('search');
+      const noResults = document.getElementById('noResults');
+      const expandAll = document.querySelector('[data-expand="all"]');
+      const collapseAll = document.querySelector('[data-collapse="all"]');
+      let activeFilter = 'all';
+
+      function searchableText(card) {
         const cardText = card.dataset.text || '';
-        const settingText = Array.from(card.querySelectorAll('[data-setting-text]')).map(item => item.dataset.settingText || '').join(' ');
-        const matchesFilter = activeFilter === 'all' || group === activeFilter;
-        const matchesSearch = !query || cardText.includes(query) || settingText.includes(query);
-        const show = matchesFilter && matchesSearch;
-        card.classList.toggle('hidden', !show);
-        if (show) visible += 1;
+        const settingText = Array.from(card.querySelectorAll('[data-setting-text]'))
+          .map((item) => item.dataset.settingText || '')
+          .join(' ');
+        return cardText + ' ' + settingText;
+      }
+
+      function applyFilters() {
+        const query = (search?.value || '').trim().toLowerCase();
+        let visible = 0;
+        cards.forEach((card) => {
+          const group = card.dataset.group;
+          const matchesFilter = activeFilter === 'all' || group === activeFilter;
+          const matchesSearch = !query || searchableText(card).includes(query);
+          const show = matchesFilter && matchesSearch;
+          card.classList.toggle('hidden', !show);
+          if (show) visible += 1;
+        });
+        if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+      }
+
+      buttons.forEach((button) => button.addEventListener('click', () => {
+        activeFilter = button.dataset.filter || 'all';
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        applyFilters();
+      }));
+
+      search?.addEventListener('input', applyFilters);
+      expandAll?.addEventListener('click', () => cards.forEach((card) => {
+        if (!card.classList.contains('hidden')) card.querySelector('details')?.setAttribute('open', 'true');
+      }));
+      collapseAll?.addEventListener('click', () => cards.forEach((card) => card.querySelector('details')?.removeAttribute('open')));
+
+      document.addEventListener('click', async (event) => {
+        const button = event.target.closest?.('.copy-btn');
+        if (!button) return;
+        const text = button.dataset.copy || '';
+        let copied = false;
+        if (navigator.clipboard?.writeText && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(text);
+            copied = true;
+          } catch {
+            copied = false;
+          }
+        }
+        if (!copied) {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', 'true');
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-9999px';
+          document.body.append(textarea);
+          textarea.select();
+          try {
+            copied = document.execCommand('copy');
+          } catch {
+            copied = false;
+          }
+          textarea.remove();
+        }
+        const old = button.textContent;
+        button.textContent = copied ? 'Copied' : 'Copy failed';
+        window.setTimeout(() => {
+          button.textContent = old;
+        }, 900);
       });
-      noResults.style.display = visible === 0 ? 'block' : 'none';
-    }
-    buttons.forEach(button => button.addEventListener('click', () => {
-      activeFilter = button.dataset.filter;
-      buttons.forEach(item => item.classList.toggle('active', item === button));
+
       applyFilters();
-    }));
-    search.addEventListener('input', applyFilters);
-    document.addEventListener('click', async event => {
-      const button = event.target.closest('.copy-btn');
-      if (!button) return;
-      const text = button.dataset.copy || '';
-      let copied = false;
-      if (navigator.clipboard?.writeText) {
-        try {
-          await navigator.clipboard.writeText(text);
-          copied = true;
-        } catch {}
-      }
-      if (!copied) {
-        const textarea = document.createElement('textarea');
-        textarea.value = text;
-        textarea.setAttribute('readonly', 'true');
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-        document.body.append(textarea);
-        textarea.select();
-        try {
-          copied = document.execCommand('copy');
-        } catch {}
-        textarea.remove();
-      }
-      const old = button.textContent;
-      button.textContent = copied ? 'Copied' : 'Copy failed';
-      setTimeout(() => button.textContent = old, 900);
-    });
-    if (search && noResults && buttons.length > 0 && cards.length >= 0) {
-      applyFilters();
-    }
+      document.documentElement.dataset.reportInteractive = 'ready';
+    })();
   </script>
 </body>
 </html>`;

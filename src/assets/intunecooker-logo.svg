@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 640" role="img" aria-labelledby="title desc">
+  <title id="title">Cloud Cook logo for IntuneCooker</title>
+  <desc id="desc">Cloud chef mascot with a yellow face, white cloud chef hat, and the words CLOUD COOK underneath.</desc>
+  <defs>
+    <filter id="shadow" x="-14%" y="-10%" width="128%" height="126%">
+      <feDropShadow dx="0" dy="5" stdDeviation="3.5" flood-color="#071b2d" flood-opacity="0.35"/>
+    </filter>
+    <linearGradient id="face" x1="113" y1="298" x2="399" y2="488" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd51a"/>
+      <stop offset="1" stop-color="#f7bd00"/>
+    </linearGradient>
+    <linearGradient id="hat" x1="64" y1="46" x2="448" y2="286" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.72" stop-color="#fbfbfa"/>
+      <stop offset="1" stop-color="#f2f2ef"/>
+    </linearGradient>
+  </defs>
+
+  <g filter="url(#shadow)" stroke="#061d31" stroke-width="17" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="url(#hat)" d="M120 313v-65H98c-39 0-71-32-71-71s32-71 71-71c15 0 29 4 41 13 15-61 67-105 129-105s114 44 129 105c12-9 26-13 41-13 39 0 71 32 71 71s-32 71-71 71h-22v65h-39v-39c-80-19-161-19-242 0v39z"/>
+    <path fill="none" d="M120 313v-65"/>
+    <path fill="none" d="M416 313v-65"/>
+    <path fill="url(#face)" d="M120 303c84-24 186-24 296 0v78c0 76-66 132-148 132s-148-56-148-132z"/>
+    <path fill="url(#face)" d="M120 374c-18-16-49-4-49 25 0 28 31 43 51 23"/>
+    <path fill="url(#face)" d="M416 374c18-16 49-4 49 25 0 28-31 43-51 23"/>
+    <path fill="none" d="M123 302c83-23 186-23 288 0"/>
+
+    <path fill="#ffffff" d="M149 375c13-39 58-51 103-17v58c-49 14-91-2-103-41z"/>
+    <path fill="#ffffff" d="M387 375c-13-39-58-51-103-17v58c49 14 91-2 103-41z"/>
+    <path fill="none" d="M163 340l88 46"/>
+    <path fill="none" d="M373 340l-88 46"/>
+    <circle cx="212" cy="389" r="18" fill="#061d31" stroke="none"/>
+    <circle cx="324" cy="389" r="18" fill="#061d31" stroke="none"/>
+    <circle cx="268" cy="426" r="34" fill="#ffd01a"/>
+    <path fill="none" d="M221 471c23 24 71 24 94 0"/>
+
+    <path fill="url(#hat)" d="M190 247c0-26 21-47 47-47 6-31 33-53 66-53 37 0 67 30 67 67 28 1 50 24 50 52 0 30-24 54-54 54H216c-15 0-26-12-26-27z" transform="translate(-34 -43) scale(.86)"/>
+  </g>
+
+  <text x="256" y="604" text-anchor="middle" fill="#061d31" font-family="Segoe UI, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="14">CLOUD COOK</text>
+</svg>
